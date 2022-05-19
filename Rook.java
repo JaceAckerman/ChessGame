@@ -1,12 +1,20 @@
 
 public class Rook extends Piece {
 
+	private boolean firstMove = true;
 	public Rook(boolean iW) {
 		super(iW);
 
 		if(iW == false) {
 			this.setWhite(false);
 		}
+	}
+	
+	public boolean getFirstMove() {
+		return firstMove;
+	}
+	public void setFirstMove(boolean f) {
+		firstMove = f;
 	}
 
 	public boolean canMove(Board b, Position start, Position end) {
