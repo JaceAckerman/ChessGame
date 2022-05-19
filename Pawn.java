@@ -26,6 +26,12 @@ public class Pawn extends Piece{
 		}
 		//for black pawns
 		if(!this.isWhite()) {
+			if(b.getPosition(end.getRank(), end.getFile()).isOccupied() && 
+					(b.getPosition(start.getRank() +1 , start.getFile() +1).equals(end) ||
+							b.getPosition(start.getRank() +1 , start.getFile() -1).equals(end))) {
+				
+				return true;
+			}
 			//check if can move forward twice
 			if(firstMove && end.getRank() == start.getRank() + 2 || end.getRank() == start.getRank() + 1 )
 			{

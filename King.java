@@ -2,6 +2,8 @@ import java.util.ArrayList;
 
 public class King extends Piece {
 	//public boolean checkMate = false;
+	public boolean castle = false;
+	public boolean firstMove = true;
 	public King(boolean iW) {
 		super(iW);
 		
@@ -49,11 +51,19 @@ public class King extends Piece {
 	/*
 	 * checks if the king is currently checked
 	 * currP is the king's current position
-	 * possP is the position that possibly checks the king.
+	 * Goes through the whole board and sees if
+	 * any position has a piece that checks the king
 	 */
-	public boolean isChecked(Board b, Position currP,Position possP) {
-		if(possP.getPiece().canMove(b, possP, currP )) {
-			return true;
+	public boolean isChecked(Board b, Position currP) {
+		for(int r = 0; r < b.getRows(); r++) {
+			for(int c = 0; c < b.getRows(); c++) {
+				if(b.getPosition(r,c).getPiece() != null && !b.getPosition(r,c).equals(currP)) {
+					if(b.getPosition(r,c).getPiece().canMove(b, b.getPosition(r,c), currP) && 
+							!b.getPosition(r,c).getPiece().isSameColor(currP.getPiece())) {
+						return true;
+					}
+				}
+			}
 		}
 		return false;
 	}
@@ -65,6 +75,9 @@ public class King extends Piece {
 	 */
 	public boolean checkMate(Board b, Position currP) {
 		
+		if(!this.isChecked(b, currP)) {
+			return false;
+		}
 		ArrayList<Position> possibleMoves = new ArrayList<Position>();
 		
 		//adding positions
@@ -85,4 +98,63 @@ public class King extends Piece {
 		
 		return true;
 	}
+	
+	public boolean getCastle() {
+		return castle;
+	}
+	public void setCastle(boolean b) {
+		castle = b;
+	}
+	
+	public boolean getFirstMove() {
+		return firstMove;
+	}
+	public void setFirstMove(boolean f) {
+		firstMove = f;
+	}
+	
+	
+	/*
+	 * 
+	 */
+	public boolean canCastle(Board b, Position currP, Position rookP) {
+		if(this.isWhite()) {
+			//trying to castle to the left
+			if(rookP.getFile() < currP.getFile()){
+				if(rookP.getPiece().canMove(b, rookP, 
+				   b.getPosition(currP.getRank(), currP.getFile() -1)) && !getCastle() && firstMove){
+					
+					return true;
+				}
+			}
+			//trying to castle to the right
+			else {
+				if(rookP.getPiece().canMove(b, rookP, 
+				   b.getPosition(currP.getRank(), currP.getFile() +1)) && !getCastle() && firstMove){
+					return true;
+				}
+			}
+		}
+		//black
+		if(!this.isWhite()) {
+			//trying to castle to the left
+			if(rookP.getFile() < currP.getFile()){
+				if(rookP.getPiece().canMove(b, rookP, 
+				   b.getPosition(currP.getRank(), currP.getFile() -1)) && !getCastle() && firstMove){
+					
+					return true;
+				}
+			}
+			//trying to castle to the right
+			else {
+				if(rookP.getPiece().canMove(b, rookP, 
+				   b.getPosition(currP.getRank(), currP.getFile() +1)) && !getCastle() && firstMove){
+					return true;
+				}
+			}
+		}
+		return false;
+		
+	}
+			
 }
