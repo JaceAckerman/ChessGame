@@ -1,5 +1,6 @@
+package ChessPackage;
 
-public class Pawn extends Piece{
+public class Pawn extends Piece {
 	public boolean promotion = false;
 	public boolean firstMove = true;
 	public Pawn(boolean iW) {
@@ -26,14 +27,8 @@ public class Pawn extends Piece{
 		}
 		//for black pawns
 		if(!this.isWhite()) {
-			if(b.getPosition(end.getRank(), end.getFile()).isOccupied() && 
-					(b.getPosition(start.getRank() +1 , start.getFile() +1).equals(end) ||
-							b.getPosition(start.getRank() +1 , start.getFile() -1).equals(end))) {
-				
-				return true;
-			}
 			//check if can move forward twice
-			if(firstMove && end.getRank() == start.getRank() + 2 || end.getRank() == start.getRank() + 1 )
+			if(firstMove && end.getRank() == start.getRank() + 2 || ((end.getRank() == start.getRank() + 1 )&& end.getFile() == start.getFile()))
 			{
 				if(b.getPosition(end.getRank(), end.getFile()).isOccupied()) {
 					return false;
@@ -41,21 +36,61 @@ public class Pawn extends Piece{
 				return true;
 			}
 			if(!firstMove && end.getRank() == start.getRank() +1) {
-				if(b.getPosition(end.getRank(), end.getFile()).isOccupied()) {
-					return false;
+				if(b.getPosition(end.getRank(), end.getFile()).isOccupied())
+				{
+					if(start.getFile()==7)
+					{
+						if(b.getPosition(start.getRank() + 1 , start.getFile() -1).equals(end))
+						{
+							return true;
+						}
+					}
+					else if(start.getFile()==0)
+					{
+						if(b.getPosition(start.getRank() + 1 , start.getFile() +1).equals(end))
+						{
+							return true;
+						}
+						
+					}
+					else if((b.getPosition(start.getRank() + 1 , start.getFile() +1).equals(end)) ||
+						    (b.getPosition(start.getRank() + 1 , start.getFile() -1).equals(end))) 
+					{
+						return true;
+					}
 				}
 				return true;
 			}
+			
+			
 
 			return false;
 		}
 		//for white pawns
 		else {
-			if(b.getPosition(end.getRank(), end.getFile()).isOccupied() && 
-					(b.getPosition(start.getRank() - 1 , start.getFile() +1).equals(end) ||
-							b.getPosition(start.getRank() - 1 , start.getFile() -1).equals(end))) {
+			if(b.getPosition(end.getRank(), end.getFile()).isOccupied())
+			{
+				if(start.getFile()==7)
+				{
+					if(b.getPosition(start.getRank() - 1 , start.getFile() -1).equals(end))
+					{
+						return true;
+					}
+				}
+				else if(start.getFile()==0)
+				{
+					if(b.getPosition(start.getRank() - 1 , start.getFile() +1).equals(end))
+					{
+						return true;
+					}
+					
+				}
+				else if((b.getPosition(start.getRank() - 1 , start.getFile() +1).equals(end)) ||
+					    (b.getPosition(start.getRank() - 1 , start.getFile() -1).equals(end))) 
+				{
+					return true;
+				}
 				
-				return true;
 			}
 			//check if can move forward twice
 			if(firstMove && end.getRank() == start.getRank() - 2 || end.getRank() == start.getRank() - 1 )
@@ -77,6 +112,6 @@ public class Pawn extends Piece{
 		}
 	}
 	
-	
 
 }
+
