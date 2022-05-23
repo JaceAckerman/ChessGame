@@ -58,8 +58,16 @@ public class Pawn extends Piece {
 					{
 						return true;
 					}
+					return false;
 				}
-				return true;
+				else
+				{
+					if(start.getFile() == end.getFile())
+					{
+						return true;
+					}
+					return false;
+				}
 			}
 			
 			
