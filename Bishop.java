@@ -1,4 +1,6 @@
 
+package ChessPackage;
+
 public class Bishop extends Piece{
 
 	public Bishop(boolean iW) {
@@ -24,7 +26,7 @@ public class Bishop extends Piece{
 				//check if going down to the left 
 				if(start.getFile() > end.getFile()) {
 					x -= 1;
-					for(int i = start.getRank()+x; i <= end.getRank(); i++){
+					for(int i = start.getRank()+1; i <= end.getRank(); i++){
 						if(b.getPosition(i, x).isOccupied() && 
 								!b.getPosition(i, x).equals(end)){
 							return false;
@@ -78,4 +80,6 @@ public class Bishop extends Piece{
 		return false;
 	}
 
+
 }
+
