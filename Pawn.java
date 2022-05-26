@@ -100,7 +100,7 @@ public class Pawn extends Piece {
 				}
 			}
 			else {
-				if(!firstMove && start.getFile() == end.getFile() && Math.abs(start.getFile() - end.getFile()) == 1)
+				if((!firstMove) && (start.getFile() == end.getFile()) && (Math.abs(start.getRank() - end.getRank()) == 1))
 				{
 					return true;
 				}
@@ -130,4 +130,5 @@ public class Pawn extends Piece {
 	
 
 }
+
 
