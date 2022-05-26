@@ -686,6 +686,192 @@ public class Board extends JFrame implements ActionListener{
 			
 	}
 	
+	private boolean canCastle(Rook r, King k)
+		{
+			if(r.isWhite()!=whiteMove || k.isWhite() != whiteMove)
+			{
+				return false;
+			}
+			if(r.getFirstMove()==false || k.getFM()==false)
+			{
+				return false;
+			}
+			if(whiteMove)
+			{
+				Position p = findPosition(wKing, myBoard);
+				if(r==wRook2)
+				{
+					for(int i=0; i<2; i++)
+					{
+						if(myBoard[p.getRank()][p.getFile()+i+1].isOccupied())
+						{
+							return false;
+						}
+						if(putSelfInCheck(myBoard[p.getRank()][p.getFile()+i+1], p, whiteMove))
+						{
+							return false;
+						}
+					}
+					return true;
+				}
+				if(r==wRook)
+				{
+					for(int i=0; i<2; i++)
+					{
+						if(myBoard[p.getRank()][p.getFile()-i-1].isOccupied())
+						{
+							return false;
+						}
+						if(putSelfInCheck(myBoard[p.getRank()][p.getFile()-i-1],p, whiteMove))
+						{
+							return false;
+						}
+					}
+					if(myBoard[p.getRank()][p.getFile()-3].isOccupied())
+					{
+						return false;
+					}
+					return true;
+				}
+			}
+			else
+			{
+				Position p = findPosition(bKing, myBoard);
+				if(r==bRook2)
+				{
+					for(int i=0; i<2; i++)
+					{
+						if(myBoard[p.getRank()][p.getFile()+i+1].isOccupied())
+						{
+							return false;
+						}
+						if(putSelfInCheck(myBoard[p.getRank()][p.getFile()+i+1],p, whiteMove))
+						{
+							return false;
+						}
+					}
+					return true;
+				}
+				if(r==bRook)
+				{
+					for(int i=0; i<2; i++)
+					{
+						if(myBoard[p.getRank()][p.getFile()-i-1].isOccupied())
+						{
+							return false;
+						}
+						if(putSelfInCheck(myBoard[p.getRank()][p.getFile()-i-1],p, whiteMove))
+						{
+							return false;
+						}
+					}
+					if(myBoard[p.getRank()][p.getFile()-3].isOccupied())
+					{
+						return false;
+					}
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		private void castle(Position f, Position t)
+		{
+			if(f.getRank()==t.getRank()&&(int)Math.abs(f.getFile()-t.getFile())==2)
+			{
+				if(whiteMove)
+				{
+					if(f.getFile()-t.getFile()==-2)
+					{
+						if(canCastle(wRook2, wKing))
+						{
+							myBoard[7][6].setPiece(wKing);
+							myBoard[7][4].setPiece(null);
+							squares[7][6].setIcon(squares[7][4].getIcon());
+							squares[7][4].setIcon(null);
+							myBoard[7][5].setPiece(wRook2);
+							myBoard[7][7].setPiece(null);
+							squares[7][5].setIcon(squares[7][7].getIcon());
+							squares[7][7].setIcon(null);
+							castleKS = true;
+							String temp = text.getText();
+							temp += this.toString(t, f, wKing, false, false);
+							text.setText(temp);
+							whiteMove = !whiteMove;
+							return;
+						}
+					}
+					else
+					{
+						if(canCastle(wRook, wKing))
+						{
+							myBoard[7][2].setPiece(wKing);
+							myBoard[7][4].setPiece(null);
+							squares[7][2].setIcon(squares[7][4].getIcon());
+							squares[7][4].setIcon(null);
+							myBoard[7][3].setPiece(wRook);
+							myBoard[7][0].setPiece(null);
+							squares[7][3].setIcon(squares[7][7].getIcon());
+							squares[7][0].setIcon(null);
+							castleQS = true;
+							String temp = text.getText();
+							temp += this.toString(t, f, wKing, false, false);
+							text.setText(temp);
+							whiteMove = !whiteMove;
+							return;
+							
+						}
+					}
+				}
+				else
+				{
+					if(t.getFile()-f.getFile()==2)
+					{
+						if(canCastle(bRook2, bKing))
+						{
+							myBoard[0][6].setPiece(bKing);
+							myBoard[0][4].setPiece(null);
+							squares[0][6].setIcon(squares[0][4].getIcon());
+							squares[0][4].setIcon(null);
+							myBoard[0][5].setPiece(bRook2);
+							myBoard[0][7].setPiece(null);
+							squares[0][5].setIcon(squares[0][7].getIcon());
+							squares[0][7].setIcon(null);
+							castleKS = true;
+							String temp = text.getText();
+							temp += this.toString(t, f, bKing, false, false);
+							text.setText(temp);
+							whiteMove = !whiteMove;
+							return;
+							
+						}
+					}
+					else
+					{
+						if(canCastle(bRook, bKing))
+						{
+							myBoard[0][2].setPiece(bKing);
+							myBoard[0][4].setPiece(null);
+							squares[0][2].setIcon(squares[0][4].getIcon());
+							squares[0][4].setIcon(null);
+							myBoard[0][3].setPiece(bRook);
+							myBoard[0][0].setPiece(null);
+							squares[0][3].setIcon(squares[0][0].getIcon());
+							squares[0][0].setIcon(null);
+							castleQS = true;
+							String temp = text.getText();
+							temp += this.toString(t, f, bKing, false, false);
+							text.setText(temp);
+							whiteMove = !whiteMove;
+							return;
+							
+						}
+					}
+				}
+			}
+			
+		}
+	
 	
 }
 
