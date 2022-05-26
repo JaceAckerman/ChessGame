@@ -1,3 +1,5 @@
+package ChessPackage;
+
 public class Queen extends Piece {
 	
 	public Queen(boolean iW) {
@@ -23,7 +25,7 @@ public class Queen extends Piece {
 			if(start.getFile() < end.getFile()) {
 				for(int i = start.getFile()+ 1; i <= end.getFile(); i++) {
 					if(b.getPosition(start.getRank(),i).isOccupied() && 
-							!b.getPosition(i, start.getFile()).equals(end)) {
+							!b.getPosition(start.getRank(), i).equals(end)) {
 						return false;
 					}
 				}
@@ -31,7 +33,7 @@ public class Queen extends Piece {
 			if(start.getFile() > end.getFile()) {
 				for(int i = start.getFile()-1; i >= end.getFile(); i--) {
 					if(b.getPosition(start.getRank(),i).isOccupied() && 
-							!b.getPosition(i, start.getFile()).equals(end)) {
+							!b.getPosition(start.getRank(), i).equals(end)) {
 						return false;
 					}
 				}
@@ -39,7 +41,7 @@ public class Queen extends Piece {
 			return true;
 		}
 		//check vertical
-		if(start.getFile() == end.getFile() && start.getRank() != end.getFile()) {
+		if(start.getFile() == end.getFile() && start.getRank() != end.getRank()) {
 			if(start.getRank() < end.getRank()) {
 				for(int i = start.getRank()+ 1; i <= end.getRank(); i++) {
 					if(b.getPosition(i,start.getFile()).isOccupied() && 
@@ -66,21 +68,23 @@ public class Queen extends Piece {
 				//check if going down to the left 
 				if(start.getFile() > end.getFile()) {
 					for(int i = start.getRank()+x; i <= end.getRank(); i++){
+						x--;
 						if(b.getPosition(i,x).isOccupied() && 
 								!b.getPosition(i, x).equals(end)){
 							return false;
 						}
-						x--;
+						
 					}
 				}
 				//checks if going down to the right
 				else {
 					for(int i = start.getRank()+1; i <= end.getRank(); i++){
+						x++;
 						if(b.getPosition(i,x).isOccupied() && 
 								!b.getPosition(i,x).equals(end)){
 							return false;
 						}
-						x++;
+						
 					}
 				}
 			}
@@ -90,21 +94,23 @@ public class Queen extends Piece {
 				//check if going up to the left
 				if(start.getFile() > end.getFile()) {
 					for(int i = start.getRank()-1; i >= end.getRank(); i--){
+						x--;
 						if(b.getPosition(i, x).isOccupied() && 
 								!b.getPosition(i, x).equals(end)){
 							return false;
 						}
-						x--;
+						
 					}
 				}
 				//checks if going up to the right
 				else {
-					for(int i = start.getRank()-1; i >= end.getRank(); i--){
+					for(int i = start.getRank()-1; i > end.getRank(); i--){
+						x++;
 						if(b.getPosition(i, x).isOccupied() && 
 								!b.getPosition(i,x).equals(end)){
+							System.out.println(b.getPosition(i, x));
 							return false;
 						}
-						x++;
 					}
 				}
 			}
@@ -118,3 +124,4 @@ public class Queen extends Piece {
 		return super.toString();
 	}
 }
+
