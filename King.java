@@ -23,7 +23,7 @@ public class King extends Piece {
 	        
 	        if(y==0)
 	        {
-	        	if(x==1 && !isFutureCheck(b,start, end))
+	        	if(x==1)
 	        	{
 	        		return true;
 	        	}
@@ -32,14 +32,14 @@ public class King extends Piece {
 	        
 	        if(x==0)
 	        {
-	        	if(y==1 && !isFutureCheck(b,start, end))
+	        	if(y==1)
 	        	{
 	        		return true;
 	        	}
 	        	return false;
 	        }
 	        
-	        if (x + y == 2 && !isFutureCheck(b,start, end)) {
+	        if (x + y == 2) {
 	        	return true;
 	        }
 	        return false;
@@ -77,4 +77,3 @@ public class King extends Piece {
 		}
 
 }
-
