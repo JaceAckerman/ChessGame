@@ -15,7 +15,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-
+/**
+ * Authors: Jonathan Stump, Tyler Lintker
+ * Jace Akerman
+ * This is the single greatest chess game known to man.
+ * Take a moment and appreciate it.
+ *
+ */
 public class Board extends JFrame implements ActionListener{
 
 	private JButton[][] squares = new JButton[8][8];
@@ -342,6 +348,7 @@ public class Board extends JFrame implements ActionListener{
 			if(p instanceof Pawn)
 			{
 				((Pawn) p).setFirstMove(false);
+				promotion(t, !whiteMove);
 			}
 			if(p instanceof Rook)
 			{
@@ -916,5 +923,12 @@ public class Board extends JFrame implements ActionListener{
 		
 	}
 	
+	private void promotion(Position at, boolean whiteMove)
+	{
+		if(at.getRank() == 0 || at.getRank() == 7)
+		{
+			at.setPiece(new Queen(whiteMove));
+		}
+	}
 }
 
