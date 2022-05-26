@@ -274,7 +274,6 @@ public class Board extends JFrame implements ActionListener{
 			return;
 		}
 		
-		
 		if((p.canMove(this, f, t)) && (p.isWhite() == whiteMove))
 		{
 			if(putSelfInCheck(t, f, whiteMove))
@@ -294,19 +293,35 @@ public class Board extends JFrame implements ActionListener{
 			myBoard[f.getRank()][f.getFile()].setPiece(null);
 			squares[t.getRank()][t.getFile()].setIcon(squares[f.getRank()][f.getFile()].getIcon());
 			squares[f.getRank()][f.getFile()].setIcon(null);
-			if(whiteMove) {
+			
+			if(isCheckmate(t, f, whiteMove))
+			{
 				String temp = text.getText();
-				temp += this.toString(t, f, p, capture, bKing.isChecked(this, findPosition(bKing, myBoard), t));
+				temp += this.toString(t, f, p, capture, wKing.isChecked(this, findPosition(wKing, myBoard), t), true);
+				temp += '\n';
+				if(whiteMove) {
+					temp += "white wins lol";
+				}
+				else
+				{
+					temp += "black wins lol";
+				}
+				text.setText(temp);
+			}
+			else if(whiteMove) {
+				String temp = text.getText();
+				temp += this.toString(t, f, p, capture, bKing.isChecked(this, findPosition(bKing, myBoard), t), false);
 				text.setText(temp);
 			}
 			else
 			{
 				String temp = text.getText();
-				temp += this.toString(t, f, p, capture, wKing.isChecked(this, findPosition(wKing, myBoard), t));
+				temp += this.toString(t, f, p, capture, wKing.isChecked(this, findPosition(wKing, myBoard), t), false);
 				temp += '\n';
 				text.setText(temp);
 			}
 			//flip();
+			
 			whiteMove = !whiteMove;
 			if(p instanceof Pawn)
 			{
@@ -390,7 +405,7 @@ public class Board extends JFrame implements ActionListener{
 		myBoard[x][y] = p;
 	}
 
-	public String toString(Position pos, Position og, Piece p, boolean capture, boolean inCheck)
+	public String toString(Position pos, Position og, Piece p, boolean capture, boolean inCheck, boolean checkmate)
 	{
 		String temp = "";
 		if(p == null)
@@ -478,30 +493,46 @@ public class Board extends JFrame implements ActionListener{
 		if(!(p instanceof Pawn))
 		{
 			if(whiteMove) {
-				if(inCheck)
+				if(inCheck && !checkmate)
 				{
 					return ""+turnNum +". " +temp +(8-pos.getRank()) +"+";
 				}
+				else if(checkmate)
+				{
+					return ""+turnNum +". " +temp +(8-pos.getRank()) +"#";
+				}
 				return ""+turnNum +". " +temp +(8-pos.getRank());
 			}
-			if(inCheck)
+			if(inCheck && !checkmate)
 			{
 				return " "+temp +(8-pos.getRank()) +"+";
+			}
+			else if(checkmate)
+			{
+				return " "+temp +(8-pos.getRank()) +"#";
 			}
 			return " " +temp +(8-pos.getRank());
 		}
 		else
 		{
 			if(whiteMove) {
-				if(inCheck)
+				if(inCheck && !checkmate)
 				{
 					return ""+turnNum +". "+temp +"+";
 				}
+				else if(checkmate)
+				{
+					return ""+turnNum +". "+temp +"#";
+				}
 				return ""+turnNum +". "+temp;
 			}
-			if(inCheck)
+			if(inCheck && !checkmate)
 			{
 				return " "+temp +"+";
+			}
+			else if(checkmate)
+			{
+				return " "+temp +"#";
 			}
 			return " " +temp;
 		}
@@ -580,7 +611,6 @@ public class Board extends JFrame implements ActionListener{
 					{
 						if(temp[r][c].getPiece().canMove(temp1, findPosition(temp[r][c].getPiece(), temp), findPosition(bKing, temp)))
 						{
-							System.out.println(temp[r][c].toString());
 							 return true;
 						}
 					}
@@ -589,6 +619,71 @@ public class Board extends JFrame implements ActionListener{
 			}
 		}
 		return x;
+	}
+	
+	private boolean isCheckmate(Position to, Position from, boolean wm)
+	{
+		if(wm) {
+			
+				for(int r=0; r<myBoard.length; r++)
+				{
+					for(int c=0; c<myBoard[0].length; c++)
+					{
+						if(myBoard[r][c].getPiece() != null)
+						{
+							if(!myBoard[r][c].getPiece().isWhite())
+							{
+								for(int x=0; x<myBoard.length; x++)
+								{
+									for(int y=0; y<myBoard[0].length; y++)
+									{
+										if(myBoard[r][c].getPiece().canMove(this, findPosition(myBoard[r][c].getPiece(), myBoard), myBoard[x][y]))
+										{
+											if(!putSelfInCheck(myBoard[x][y], findPosition(myBoard[r][c].getPiece(), myBoard), !wm))
+											{
+												return false;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+		}
+		else
+		{
+			if(!wm) {
+				
+				for(int r=0; r<myBoard.length; r++)
+				{
+					for(int c=0; c<myBoard[0].length; c++)
+					{
+						if(myBoard[r][c].getPiece() != null)
+						{
+							if(myBoard[r][c].getPiece().isWhite())
+							{
+								for(int x=0; x<myBoard.length; x++)
+								{
+									for(int y=0; y<myBoard[0].length; y++)
+									{
+										if(myBoard[r][c].getPiece().canMove(this, findPosition(myBoard[r][c].getPiece(), myBoard), myBoard[x][y]))
+										{
+											if(!putSelfInCheck(myBoard[x][y], findPosition(myBoard[r][c].getPiece(), myBoard), !wm))
+											{
+												return false;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return true;
+			
 	}
 	
 	
