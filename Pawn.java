@@ -28,14 +28,14 @@ public class Pawn extends Piece {
 		//for black pawns
 		if(!this.isWhite()) {
 			//check if can move forward twice
-			if(firstMove && end.getRank() == start.getRank() + 2 || ((end.getRank() == start.getRank() + 1 )&& end.getFile() == start.getFile()))
+			if(start.getFile() == end.getFile() && firstMove && end.getRank() == start.getRank() + 2 || ((end.getRank() == start.getRank() + 1 )&& end.getFile() == start.getFile()))
 			{
 				if(b.getPosition(end.getRank(), end.getFile()).isOccupied()) {
 					return false;
 				}
 				return true;
 			}
-			if(!firstMove && end.getRank() == start.getRank() +1) {
+			if(end.getRank() == start.getRank() +1) {
 				if(b.getPosition(end.getRank(), end.getFile()).isOccupied())
 				{
 					if(start.getFile()==7)
@@ -62,7 +62,7 @@ public class Pawn extends Piece {
 				}
 				else
 				{
-					if(start.getFile() == end.getFile())
+					if(start.getFile() == end.getFile() && Math.abs(start.getFile() - end.getFile()) == 1)
 					{
 						return true;
 					}
@@ -98,22 +98,30 @@ public class Pawn extends Piece {
 				{
 					return true;
 				}
-				
+			}
+			else {
+				if(!firstMove && start.getFile() == end.getFile() && Math.abs(start.getFile() - end.getFile()) == 1)
+				{
+					return true;
+				}
+				if(!firstMove) {
+					return false;
+				}
 			}
 			//check if can move forward twice
-			if(firstMove && end.getRank() == start.getRank() - 2 || end.getRank() == start.getRank() - 1 )
+			if((start.getFile() == end.getFile() && firstMove && end.getRank() == start.getRank() - 2) || (start.getFile() == end.getFile() && end.getRank() == start.getRank() - 1 ))
 			{
 				if(b.getPosition(end.getRank(), end.getFile()).isOccupied()) {
 					return false;
 				}
 				return true;
 			}
-			if(!firstMove && end.getRank() == start.getRank() -1) {
-				if(b.getPosition(end.getRank(), end.getFile()).isOccupied()) {
-					return false;
-				}
-				return true;
-			}
+//			if(!firstMove && end.getRank() == start.getRank() -1) {
+//				if(b.getPosition(end.getRank(), end.getFile()).isOccupied()) {
+//					return false;
+//				}
+//				return true;
+//			}
 
 
 			return false;
