@@ -1,5 +1,14 @@
 package ChessPackage;
 
+if(castleKS||castleQS)
+			{
+				if(whiteMove)
+				{
+					return ""+turnNum + ". " + temp;
+				}
+				return " " + temp;
+			}
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
